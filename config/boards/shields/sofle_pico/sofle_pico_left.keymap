@@ -2,42 +2,46 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 
+#define BASE 0
+#define LOWER 1
+#define RAISE 2
+
 / {
     keymap {
         compatible = "zmk,keymap";
 
         default_layer {
-            label = "BASE";
+            display-name = "Base";
             bindings =
-                &kp GRAVE  &kp N1  &kp N2  &kp N3  &kp N4   &kp N5
-                &kp ESC    &kp Q   &kp W   &kp E   &kp R    &kp T
-                &kp TAB    &kp A   &kp S   &kp D   &kp F    &kp G
-                &kp LSHFT  &kp Z   &kp X   &kp C   &kp V    &kp B
-                &kp LGUI   &kp LALT &kp LCTL &mo 1 &kp RET  &kp SPACE
+                &kp GRAVE &kp N1 &kp N2 &kp N3 &kp N4 &kp N5
+                &kp ESC &kp Q &kp W &kp E &kp R &kp T
+                &kp TAB &kp A &kp S &kp D &kp F &kp G
+                &kp LSHFT &kp Z &kp X &kp C &kp V &kp B
+                &kp LGUI &kp LALT &kp LCTL &mo LOWER &kp RET &kp SPACE
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
         };
 
         lower_layer {
-            label = "LOWER";
+            display-name = "Lower";
             bindings =
-                &trans  &kp F1   &kp F2   &kp F3   &kp F4   &kp F5
-                &trans  &trans   &trans   &trans   &trans   &trans
-                &trans  &trans   &trans   &trans   &trans   &trans
-                &trans  &trans   &trans   &trans   &trans   &trans
-                &trans  &trans   &trans   &trans   &trans   &mo 2
+                &trans &kp F1 &kp F2 &kp F3 &kp F4 &kp F5
+                &trans &trans &trans &trans &trans &trans
+                &trans &trans &trans &trans &trans &trans
+                &trans &trans &trans &trans &trans &trans
+                &trans &trans &trans &trans &trans &mo RAISE
             >;
             sensor-bindings = <&inc_dec_kp PG_UP PG_DN>;
         };
 
         raise_layer {
-            label = "RAISE";
+            display-name = "Raise";
             bindings =
-                &trans      &trans       &trans       &trans       &trans  &trans
-                &bt BT_CLR  &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &trans &trans
-                &trans      &trans       &trans       &trans       &trans  &trans
-                &trans      &trans       &trans       &trans       &trans  &trans
-                &trans      &trans       &trans       &trans       &trans  &trans
+                &trans &trans &trans &trans &trans &trans
+                &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &trans &trans
+                &trans &trans &trans &trans &trans &trans
+                &trans &trans &trans &trans &trans &trans
+                &trans &trans &trans &trans &trans &trans
             >;
             sensor-bindings = <&inc_dec_kp C_BRI_UP C_BRI_DN>;
         };
