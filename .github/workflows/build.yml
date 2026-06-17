@@ -18,30 +18,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          path: zmk-config
+          path: config
 
       - name: West Init
-        working-directory: ${{ github.workspace }}
-        run: west init -l zmk-config/config
+        run: west init -l config
 
       - name: West Update
-        working-directory: ${{ github.workspace }}
-        run: west update --fetch-opt=--filter=tree:0
+        run: west update
 
       - name: West Zephyr export
-        working-directory: ${{ github.workspace }}
         run: west zephyr-export
 
-      - name: Build firmware
-        working-directory: ${{ github.workspace }}
+      - name: West Build
         run: |
           west build -s zmk/app -d build/${{ matrix.shield }} \
             -b "${{ matrix.board }}" \
-            -- -DZMK_CONFIG=${{ github.workspace }}/zmk-config/config \
+            -- -DZMK_CONFIG="${GITHUB_WORKSPACE}/config" \
                -DSHIELD="${{ matrix.shield }}"
 
       - name: Rename artifact
-        working-directory: ${{ github.workspace }}
         run: |
           mkdir -p artifacts
           cp build/${{ matrix.shield }}/zephyr/zmk.uf2 \
@@ -51,4 +46,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.shield }}-firmware
-          path: ${{ github.workspace }}/artifacts/*.uf2
+          path: artifacts/*.uf2
