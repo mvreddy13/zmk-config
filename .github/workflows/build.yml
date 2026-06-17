@@ -1,6 +1,54 @@
 name: Build ZMK firmware
+
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+    runs-on: ubuntu-latest
+    container: zmkfirmware/zmk-build-arm:stable
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - board: rpi_pico2/rp2350a/m33
+            shield: sofle_pico_left
+          - board: rpi_pico2/rp2350a/m33
+            shield: sofle_pico_right
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: zmk-config
+
+      - name: West Init
+        working-directory: ${{ github.workspace }}
+        run: west init -l zmk-config/config
+
+      - name: West Update
+        working-directory: ${{ github.workspace }}
+        run: west update --fetch-opt=--filter=tree:0
+
+      - name: West Zephyr export
+        working-directory: ${{ github.workspace }}
+        run: west zephyr-export
+
+      - name: Build firmware
+        working-directory: ${{ github.workspace }}
+        run: |
+          west build -s zmk/app -d build/${{ matrix.shield }} \
+            -b "${{ matrix.board }}" \
+            -- -DZMK_CONFIG=${{ github.workspace }}/zmk-config/config \
+               -DSHIELD="${{ matrix.shield }}"
+
+      - name: Rename artifact
+        working-directory: ${{ github.workspace }}
+        run: |
+          mkdir -p artifacts
+          cp build/${{ matrix.shield }}/zephyr/zmk.uf2 \
+             artifacts/${{ matrix.shield }}-rpi_pico2.uf2
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.shield }}-firmware
+          path: ${{ github.workspace }}/artifacts/*.uf2
