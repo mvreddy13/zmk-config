@@ -1,0 +1,9 @@
+if SHIELD_SOFLE_PICO_RIGHT
+ 
+config ZMK_KEYBOARD_NAME
+    default "Sofle Pico"
+ 
+config ZMK_SPLIT
+    default y
+ 
+endif
