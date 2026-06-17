@@ -14,6 +14,10 @@ jobs:
           west update --fetch-opt=--filter=tree:0
           west zephyr-export
 
+      - name: Install Python deps
+        run: |
+          pip3 install --user jsonschema
+
       - name: Build blinky
         run: |
           cd workspace
