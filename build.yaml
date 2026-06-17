@@ -1,6 +1,6 @@
 ---
 include:
-  - board: rpi_pico2
+  - board: rpi_pico2/rp2350a/zmk
     shield: sofle_pico_left
-  - board: rpi_pico2
+  - board: rpi_pico2/rp2350a/zmk
     shield: sofle_pico_right
