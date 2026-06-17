@@ -1,0 +1,26 @@
+name: Blinky Test
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: zmkfirmware/zmk-build-arm:stable
+    steps:
+      - name: Init west workspace
+        run: |
+          west init -m https://github.com/zephyrproject-rtos/zephyr --mr main workspace
+          cd workspace
+          west update --fetch-opt=--filter=tree:0
+          west zephyr-export
+
+      - name: Build blinky
+        run: |
+          cd workspace
+          west build -p always -b rpi_pico2/rp2350a/m33 zephyr/samples/basic/blinky
+
+      - name: Upload uf2
+        uses: actions/upload-artifact@v4
+        with:
+          name: blinky-uf2
+          path: workspace/build/zephyr/zephyr.uf2
