@@ -1,0 +1,22 @@
+if SHIELD_SOFLE_PICO_LEFT
+
+config ZMK_KEYBOARD_NAME
+    default "Sofle Pico"
+
+config ZMK_SPLIT_ROLE_CENTRAL
+    default y
+
+endif
+
+if SHIELD_SOFLE_PICO_LEFT || SHIELD_SOFLE_PICO_RIGHT
+
+config ZMK_SPLIT
+    default y
+
+endif
+
+config SHIELD_SOFLE_PICO_LEFT
+    def_bool $(shields_list_contains,sofle_pico_left)
+
+config SHIELD_SOFLE_PICO_RIGHT
+    def_bool $(shields_list_contains,sofle_pico_right)

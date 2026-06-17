@@ -1,0 +1,21 @@
+if SHIELD_SOFLE_PICO_LEFT || SHIELD_SOFLE_PICO_RIGHT
+
+config ZMK_KEYBOARD_NAME
+    default "Sofle Pico"
+
+config I2C
+    default y
+
+config SSD1306
+    default y
+
+config ZMK_DISPLAY
+    default y
+
+config EC11
+    default y
+
+config EC11_TRIGGER_GLOBAL_THREAD
+    default y
+
+endif
